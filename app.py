@@ -4,7 +4,7 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from bs4 import BeautifulSoup
 import os
-
+import pdfkit
 
 # Creating Modules
 modules = ["java-tutorial","java-string","exception-handling-in-java","multithreading-in-java","java-io","java-awt"]
@@ -40,6 +40,7 @@ for module in modules:
         soup = BeautifulSoup(r.data, 'html.parser')
         [s.extract() for s in soup('script')]
         [s.extract() for s in soup('ins')]
+        [s.extract() for s in soup('iframe')]
         mainContent = soup.find('div', attrs={'id': 'city'})
         mainContent = str(mainContent).replace("\n"," ")
         pageLen = len(mainContent)
@@ -60,3 +61,24 @@ for module in modules:
             f.close()
         except:
             print("Can't Create " + str(link) + ".html")
+            
+# Sorting HTML according to creation time
+
+def sorted_dir(folder):
+    def getctime(name):
+        path = os.path.join(folder, name)
+        return os.path.getctime(path)
+    return sorted(os.listdir(folder), key=getctime)
+
+modules = ["java-tutorial","java-string","exception-handling-in-java","multithreading-in-java","java-io","java-awt"]
+
+path_wkthmltopdf = "C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe"
+config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
+
+# Converting each module to PDF
+
+for module in modules:
+    myList = sorted_dir(module)
+    for i in range(len(myList)):
+        myList[i]=module + "/" + myList[i]
+    pdfkit.from_file(myList, module + '.pdf', configuration=config)

@@ -1,15 +1,4 @@
 .ipynb_checkpoints
 app.ipynb
-java-tutorial
-java-string
-java-io
-java-awt
-exception-handling-in-java
-multithreading-in-java
-exception-handling-in-java.pdf
-java-awt.pdf
-java-io.pdf
-java-string.pdf
-java-tutorial.pdf
-multithreading-in-java.pdf
-
+*.pdf
+*/
